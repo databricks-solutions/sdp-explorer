@@ -1,5 +1,15 @@
-*conf*.json
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local dev only — not part of the deployed app
+dev_server.py
+
+# Databricks
+.databricks/
+
+# OS / editor
 .DS_Store
-__pycache__
-.idea/
-.env
+*.swp
