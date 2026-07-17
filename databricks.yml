@@ -1,0 +1,26 @@
+bundle:
+  name: sdp-explorer
+
+# The app only needs app.py, app.yaml, requirements.txt and static/.
+# Keep docs / dev-only / VCS files out of the packaged app source.
+sync:
+  exclude:
+    - "CONTEXT.md"
+    - "README.md"
+    - "dev_server.py"
+    - ".gitignore"
+
+resources:
+  apps:
+    sdp-explorer:
+      name: sdp-explorer
+      description: "SDP Explorer — interactive Lakeflow Spark Declarative Pipelines feature demonstrations"
+      source_code_path: .
+      config:
+        command:
+          - python
+          - app.py
+
+targets:
+  dev:
+    default: true
