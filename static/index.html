@@ -856,7 +856,6 @@ const NAV = [
     items: [
       { id: "streaming-table",   name: "Streaming Table", status: "ready" },
       { id: "materialized-view", name: "Materialized View", status: "ready" },
-      { id: "private-datasets",  name: "Private datasets", status: "ready" },
       { id: "liquid-clustering", name: "Liquid clustering", status: "ready" },
     ]
   },
@@ -864,13 +863,18 @@ const NAV = [
     group: "Streaming",
     items: [
       { id: "real-time-mode", name: "Real-time mode", status: "preview" },
-      { id: "watermarks",     name: "Watermarks", status: "ready" },
     ]
   },
   {
     group: "Incremental refresh",
     items: [
       { id: "enzyme", name: "Enzyme", status: "ready" },
+    ]
+  },
+  {
+    group: "Recovery & operations",
+    items: [
+      { id: "rewind-replay", name: "Rewind & Replay", status: "preview" },
     ]
   },
   {
@@ -900,12 +904,6 @@ const NAV = [
     group: "Governance",
     items: [
       { id: "row-filters-masks", name: "Row filters & masks", status: "ready" },
-    ]
-  },
-  {
-    group: "Recovery & operations",
-    items: [
-      { id: "rewind-replay", name: "Rewind & Replay", status: "preview" },
     ]
   },
   {
