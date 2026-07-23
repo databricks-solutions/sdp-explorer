@@ -8,7 +8,9 @@ Cards covered include: Streaming Tables, Materialized Views, Enzyme incremental 
 
 ## Video Overview
 
-_A short GIF walkthrough will be added here._
+The **Rewind & Replay** card in action: drag the rewind point T (the chips and cost meter react live), then run the recovery and watch the pipeline roll back its checkpoint, restore the target table, and replay only the affected batches instead of a full refresh.
+
+![Rewind & Replay card demo](docs/rewind-replay.gif)
 
 ## Installation
 
