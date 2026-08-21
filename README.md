@@ -52,6 +52,33 @@ sdp-explorer/
     └── databricks-logo.svg
 ```
 
+## Single-file release (for easy sharing)
+
+For customers who just want to try the demo without deploying anything, the whole
+app packs into **one self-contained HTML file** that opens by double-clicking, with
+no server and no internet required. All scripts, SVGs, and web fonts are embedded.
+
+Build it locally:
+
+```bash
+python build_release.py           # -> dist/sdp-explorer.html (~1.3 MB)
+python build_release.py --no-fonts # smaller file; falls back to system fonts offline
+```
+
+`static/` stays the single source of truth; the packed file in `dist/` is a pure
+derivative and is gitignored.
+
+Publishing a versioned release is tag-driven. Pushing a `v*` tag runs
+`.github/workflows/release.yml`, which packs the file and attaches it to a GitHub
+Release as a downloadable asset:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Customers then download `sdp-explorer-v1.0.0.html` from the Releases page.
+
 ## How to get help
 
 Databricks support doesn't cover this content. For questions or bugs, please open a GitHub issue and the team will help on a best effort basis.
