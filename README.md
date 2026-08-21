@@ -68,16 +68,17 @@ python build_release.py --no-fonts # smaller file; falls back to system fonts of
 `static/` stays the single source of truth; the packed file in `dist/` is a pure
 derivative and is gitignored.
 
-Publishing a versioned release is tag-driven. Pushing a `v*` tag runs
-`.github/workflows/release.yml`, which packs the file and attaches it to a GitHub
-Release as a downloadable asset:
+To publish a versioned release, run `release.sh` with the version tag. It builds
+the file, tags the current commit, and attaches the HTML to a GitHub Release
+(GitHub Actions is disabled org-wide, so releasing is a local step, not CI):
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+./release.sh v1.0.0            # build, tag, push, and publish the release
+./release.sh v1.0.0 --dry-run  # build only, to preview the artifact
 ```
 
-Customers then download `sdp-explorer-v1.0.0.html` from the Releases page.
+Requires `gh` authenticated and a clean checkout on the commit you want to
+release. Customers then download `sdp-explorer-v1.0.0.html` from the Releases page.
 
 ## How to get help
 
