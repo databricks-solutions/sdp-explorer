@@ -38,23 +38,32 @@
     --src-line: #bcd8ee;
     --sidebar-w: 300px;
     --header-h: 64px;
+    --zoom: 1.1;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
+  html, body { margin: 0; padding: 0; height: 100%; }
   body {
     background: var(--bg);
     color: var(--ink);
     font-family: "DM Sans", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     font-size: 16px; line-height: 1.55;
     -webkit-font-smoothing: antialiased;
-    zoom: 1.1;   /* bake in the ~110% baseline the layout reads best at */
+    zoom: var(--zoom);   /* bake in the ~110% baseline the layout reads best at */
+    /* App shell: the page itself never scrolls — the sidebar and main each own
+       their scroll, so a long article never buries the nav. (100vh is measured in
+       the zoomed coordinate space, so divide by --zoom to fill the real viewport.) */
+    height: calc(100vh / var(--zoom));
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
   }
   a { color: var(--blue); text-decoration: none; }
   a:hover { text-decoration: underline; }
 
   /* ---------- HEADER ---------- */
   header {
-    position: sticky; top: 0; z-index: 50;
+    position: relative; z-index: 50;
+    flex: 0 0 var(--header-h);
     height: var(--header-h);
     display: flex; align-items: center; gap: 26px;
     padding: 0 26px;
@@ -77,25 +86,31 @@
   .header-spacer { flex: 1; }
 
   /* ---------- LAYOUT ---------- */
-  .shell { display: grid; grid-template-columns: var(--sidebar-w) 1fr; align-items: start; }
+  .shell { display: grid; grid-template-columns: var(--sidebar-w) 1fr; align-items: stretch;
+    flex: 1 1 auto; min-height: 0; }
 
   /* ---------- SIDEBAR ---------- */
   aside {
-    position: sticky; top: var(--header-h);
-    height: calc(100vh - var(--header-h));
+    height: 100%; min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
     border-right: 1px solid var(--line);
-    padding: 20px 0 60px;
+    padding: 16px 0 18px;
     background: var(--rail);
   }
-  .side-title { padding: 0 20px 14px; font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .02em; color: var(--muted); text-transform: lowercase; border-bottom: 1px solid var(--line-2); margin-bottom: 8px; }
-  .nav-group { margin-top: 16px; }
+  aside::-webkit-scrollbar { width: 10px; }
+  aside::-webkit-scrollbar-thumb { background: var(--line); border-radius: 99px; border: 3px solid var(--rail); }
+  aside::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+  .side-title { padding: 0 20px 10px; font-family: var(--display); font-size: 11px; font-weight: 600; letter-spacing: .02em; color: var(--muted); text-transform: lowercase; border-bottom: 1px solid var(--line-2); margin-bottom: 5px; }
+  .nav-group { margin-top: 10px; }
   .nav-group > .grp-label {
-    padding: 6px 20px; font-family: var(--display); font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted);
+    padding: 5px 20px; font-family: var(--display); font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted);
   }
   .nav-item {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 7px 20px 7px 20px; font-size: 14px; color: var(--ink-2); cursor: pointer;
+    padding: 6px 20px 6px 20px; font-size: 14px; color: var(--ink-2); cursor: pointer;
     border-left: 2px solid transparent; transition: color .12s, background .12s, border-color .12s;
   }
   .nav-item:hover { background: #fff; color: var(--ink); border-left-color: var(--line); }
@@ -105,7 +120,7 @@
   .pill { font-family: var(--display); font-size: 8.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--rail); border: 1px solid var(--line); border-radius: 4px; padding: 2px 6px; }
 
   /* ---------- MAIN ---------- */
-  main { padding: 38px 48px 100px; max-width: 1240px; }
+  main { padding: 38px 48px 100px; max-width: 1240px; overflow-y: auto; min-height: 0; }
   /* breadcrumb reframed as a console eyebrow — mono, tracked, with a live tick */
   .crumb { font-family: var(--display); color: var(--muted); font-size: 10.5px; font-weight: 500;
     text-transform: uppercase; letter-spacing: .1em; margin-bottom: 18px; display: flex; align-items: center; gap: 9px; }
@@ -716,10 +731,13 @@
   .wm-dot.drop .dl { color: var(--red); font-weight: 700; }
 
   @media (max-width: 900px){
-    .shell { grid-template-columns: 1fr; }
+    /* Stacked layout: fall back to a single natural page scroll (nav on top, then content). */
+    body { height: auto; min-height: 100%; overflow: visible; display: block; }
+    header { position: sticky; top: 0; }
+    .shell { grid-template-columns: 1fr; min-height: 0; }
     .flow-multi { grid-template-columns: 1fr; gap: 14px; }
-    aside { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--line); }
-    main { padding: 28px 20px 80px; }
+    aside { position: static; height: auto; overflow: visible; border-right: none; border-bottom: 1px solid var(--line); }
+    main { padding: 28px 20px 80px; overflow: visible; height: auto; }
     .flow { grid-template-columns: 1fr; }
     .arrow { transform: rotate(90deg); height: 28px; }
     .grid2 { grid-template-columns: 1fr; }
@@ -888,9 +906,10 @@ const NAV = [
   {
     group: "Flows",
     items: [
-      { id: "append-flow",   name: "Append flow", status: "ready" },
-      { id: "replace-where", name: "REPLACE WHERE", status: "preview" },
-      { id: "sinks",         name: "Sinks", status: "ready" },
+      { id: "append-flow",        name: "Append flow", status: "ready" },
+      { id: "replace-where",      name: "REPLACE WHERE", status: "preview" },
+      { id: "sinks",              name: "Sinks", status: "ready" },
+      { id: "foreach-batch-sink", name: "foreach_batch sink", status: "ready" },
     ]
   },
   {
@@ -932,6 +951,7 @@ const DEMOS = {
   "cicd-bundles": cicdBundlesDemo,
   "real-time-mode": realTimeModeDemo,
   "sinks": sinksDemo,
+  "foreach-batch-sink": foreachBatchSinkDemo,
   "row-filters-masks": rowFiltersMasksDemo,
   "liquid-clustering": liquidClusteringDemo,
   "private-datasets": privateDatasetsDemo,
@@ -1752,11 +1772,11 @@ function materializedViewDemo() {
         <div class="col-h">Watch out</div>
         <ul class="clean watch">
           <li>Incremental refresh is <b>serverless-only</b>; classic compute falls back to full rebuilds.</li>
-          <li>Not every query is incrementally maintainable — complex ones full-recompute by design.</li>
-          <li>An MV reflects its source <em>as of the last refresh</em>, not live — mind the schedule/SLA.</li>
+          <li>An MV reflects its source <em>as of the last refresh</em>, not live, so mind the schedule/SLA.</li>
         </ul>
       </div>
     </div>
+    <div class="note"><span class="ic">ⓘ</span><p><b>The refresh path is decided dynamically.</b> Some microbatches run faster as a full refresh than as many per-group incremental updates. Every refresh, the MV cost model weighs incremental maintenance against a full recompute and picks the <b>cheaper path</b> for that batch. So a full refresh can be a deliberate cost decision, not only what happens when a query falls outside the incrementally maintainable set. You can steer this behaviour with <b>incremental refresh policies</b>: see <a href="https://docs.databricks.com/gcp/en/ldp/incremental-refresh#refresh-policy" target="_blank" rel="noopener">Incremental refresh · Refresh policy</a>.</p></div>
   </section>
   `;
 }
@@ -2435,6 +2455,108 @@ dlt.<span class="c-fn">create_sink</span>(
   </section>
   `;
 }
+
+/* ---------- FOREACH_BATCH SINK ---------- */
+function foreachBatchSinkDemo() {
+  return `
+  <div class="crumb">SDP Explorer <span class="sep">›</span> Flows <span class="sep">›</span> <b>foreach_batch sink</b></div>
+  <h1><span class="verb">foreach_batch</span> sink</h1>
+  <p class="oneliner">A regular sink can only target the formats Databricks ships a connector for. A <b>foreach_batch sink</b> removes that limit: you register a Python function, and the pipeline hands it every micro-batch as <code class="kw">(df, batch_id)</code> so <em>you</em> do the write. That is how you land pipeline output in systems with no native connector — a <b>Postgres</b> table over JDBC, or an arbitrary <b>REST API</b> — and even fan out to several at once. Step the stream and watch your handler fire once per micro-batch.</p>
+
+  <section>
+    <h2>See what it does</h2>
+    <div class="cdc-toggle" id="fbToggle" style="margin-bottom:14px;">
+      <button data-mode="postgres" class="active">Postgres (JDBC)</button>
+      <button data-mode="api">REST API</button>
+      <button data-mode="fanout">Fan-out</button>
+    </div>
+
+    <div class="flow">
+      <div class="tbl">
+        <div class="tbl-head">
+          <div class="name">events</div>
+          <div class="sub" id="fbSrcSub">pipeline streaming table · offset 0</div>
+        </div>
+        <div class="tbl-body gsap-rows" id="fbSrc" style="min-height:230px;"></div>
+      </div>
+      <div class="arrow" id="fbArrow">
+        <span class="flow-tag" id="fbFlowTag">foreach_batch</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <div class="sink-panel">
+        <div class="sh"><span class="nm" id="fbDestName">public.orders</span><span class="badge" id="fbDestBadge">postgres · jdbc</span></div>
+        <div class="sink-body gsap-rows" id="fbDest" style="min-height:230px;"></div>
+      </div>
+    </div>
+
+    <div class="recon" id="fbBanner"><span class="ic">◆</span><p id="fbBannerTxt"></p></div>
+
+    <div class="controls">
+      <button id="fbNext">▶ Next micro-batch</button>
+      <button id="fbRefresh" class="ghost" disabled>⟲ Full refresh</button>
+      <button id="fbReset" class="ghost">Reset</button>
+      <span class="narr" id="fbNarr"></span>
+    </div>
+  </section>
+
+  <section>
+    <h2>The handler</h2>
+    <div class="code-card">
+      <div class="bar">Python</div>
+<div class="sql"><span class="c-key">from</span> pyspark <span class="c-key">import</span> pipelines <span class="c-key">as</span> dp
+
+<span class="c-key">@dp.foreach_batch_sink</span>(name = <span class="c-str">"orders_out"</span>)
+<span class="c-key">def</span> <span class="c-fn">write_batch</span>(df, batch_id):     <span class="c-dim"># runs once per micro-batch; you own the write</span>
+<span id="fbBody">  (df.write.<span class="c-fn">format</span>(<span class="c-str">"jdbc"</span>)
+     .<span class="c-fn">option</span>(<span class="c-str">"url"</span>, <span class="c-str">"jdbc:postgresql://db:5432/app"</span>)
+     .<span class="c-fn">option</span>(<span class="c-str">"dbtable"</span>, <span class="c-str">"public.orders"</span>)
+     .<span class="c-fn">mode</span>(<span class="c-str">"append"</span>).<span class="c-fn">save</span>())        <span class="c-dim"># key on id for an idempotent upsert</span></span>
+
+<span class="c-key">@dp.append_flow</span>(target = <span class="c-str">"orders_out"</span>)
+<span class="c-key">def</span> <span class="c-fn">publish</span>():
+  <span class="c-key">return</span> spark.readStream.table(<span class="c-str">"events"</span>)   <span class="c-dim"># only an append flow can target a sink</span></div>
+    </div>
+    <div class="note"><span class="ic">ⓘ</span><p>The decorator name <code class="kw">@dp.foreach_batch_sink</code> defaults to the function name. Your handler receives <code class="kw">df</code> (the micro-batch as a Spark DataFrame) and <code class="kw">batch_id</code> (a unique integer per batch); reach the session with <code class="kw">df.sparkSession</code>. Because the write is your code, the sink can be <b>anything</b> — a JDBC database, an HTTP endpoint, a message queue, or several of them in one function.</p></div>
+  </section>
+
+  <section>
+    <h2>Delivery is at-least-once — you make it idempotent</h2>
+    <div class="grid2">
+      <div class="box bad">
+        <h3>A blind append doubles data</h3>
+        <p>If <code class="kw">write_batch</code> just appends every micro-batch, a retry or a <b>full refresh</b> replays the stream from <code class="kw">batch_id = 0</code> and writes every row again. Downstream sees <b>duplicates</b> — the sink lives outside Unity Catalog, so nothing truncates it for you.</p>
+      </div>
+      <div class="box good">
+        <h3>Key on batch_id or a business key</h3>
+        <p><code class="kw">batch_id = 0</code> marks the start of a stream or a full refresh. Use it, or a primary key, to <b>MERGE / upsert</b> instead of append. The write becomes idempotent, so replays land in place with no duplicates. The docs are explicit: your handler <b>should properly handle a full refresh</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>When to leverage it</h2>
+    <div class="grid2">
+      <div>
+        <div class="col-h">Reach for it when</div>
+        <ul class="clean">
+          <li>The destination has <b>no native sink connector</b> — Postgres or another JDBC store, a REST API, a bespoke service.</li>
+          <li>One micro-batch must fan out to <b>several targets</b>, or needs custom per-batch logic (MERGE, validation, enrichment).</li>
+          <li>You want that outbound write governed inside the same pipeline instead of a separate job.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-h">Watch out</div>
+        <ul class="clean watch">
+          <li>Delivery is at-least-once: make the write idempotent, keyed on <code class="kw">batch_id</code> or a business key.</li>
+          <li>Only an <code class="kw">append_flow</code> can target a sink, and the external system's schema, retention, and cleanup are yours to own.</li>
+          <li>The handler runs per micro-batch on the driver path — keep it lean, and batch external calls rather than row-by-row where you can.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><span class="ic">ⓘ</span><p><b>Docs:</b> <a href="https://docs.databricks.com/aws/en/ldp/developer/ldp-python-ref-foreach-batch-sink" target="_blank" rel="noopener">foreach_batch_sink Python reference</a> · <a href="https://docs.databricks.com/aws/en/ldp/sinks" target="_blank" rel="noopener">Sinks in Lakeflow pipelines</a>.</p></div>
+  </section>
+  `;
+}
 function rowFiltersMasksDemo() {
   return `
   <div class="crumb">SDP Explorer <span class="sep">›</span> Governance <span class="sep">›</span> <b>Row filters &amp; masks</b></div>
@@ -2738,6 +2860,7 @@ function route(id) {
     if (id === "cicd-bundles") wireCicdBundles();
     if (id === "real-time-mode") wireRealTimeMode();
     if (id === "sinks") wireSinks();
+    if (id === "foreach-batch-sink") wireForeachBatchSink();
     if (id === "row-filters-masks") wireRowFiltersMasks();
     if (id === "liquid-clustering") wireLiquidClustering();
     if (id === "private-datasets") wirePrivateDatasets();
@@ -5108,6 +5231,144 @@ function wireSinks() {
   }
 
   toggle.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { if (b.dataset.fmt === fmt) return; fmt = b.dataset.fmt; applyFormat(); }));
+  nextBtn.addEventListener("click", next);
+  refreshBtn.addEventListener("click", refresh);
+  resetBtn.addEventListener("click", reset);
+  reset();
+}
+
+/* ---------- foreach_batch sink animation wiring ---------- */
+function wireForeachBatchSink() {
+  const POOL = [
+    { id: "ord-01", label: "checkout" }, { id: "ord-02", label: "refund" },
+    { id: "ord-03", label: "checkout" }, { id: "ord-04", label: "signup" },
+    { id: "ord-05", label: "checkout" }, { id: "ord-06", label: "refund" },
+  ];
+  const DEST = {
+    postgres: { nm: "public.orders",        badge: "postgres · jdbc" },
+    api:      { nm: "POST /v1/ingest",       badge: "rest api" },
+    fanout:   { nm: "orders + /v1/ingest",   badge: "fan-out" },
+  };
+  const BODIES = {
+    postgres: '  (df.write.<span class="c-fn">format</span>(<span class="c-str">"jdbc"</span>)\n     .<span class="c-fn">option</span>(<span class="c-str">"url"</span>, <span class="c-str">"jdbc:postgresql://db:5432/app"</span>)\n     .<span class="c-fn">option</span>(<span class="c-str">"dbtable"</span>, <span class="c-str">"public.orders"</span>)\n     .<span class="c-fn">mode</span>(<span class="c-str">"append"</span>).<span class="c-fn">save</span>())        <span class="c-dim"># key on id for an idempotent upsert</span>',
+    api:      '  <span class="c-key">import</span> requests\n  <span class="c-key">for</span> row <span class="c-key">in</span> df.<span class="c-fn">collect</span>():\n    requests.<span class="c-fn">post</span>(<span class="c-str">"https://api.example.com/v1/ingest"</span>,\n      headers = { <span class="c-str">"Idempotency-Key"</span>: <span class="c-str">f"{batch_id}-{row.id}"</span> },\n      json = row.<span class="c-fn">asDict</span>())',
+    fanout:   '  <span class="c-fn">upsert_to_postgres</span>(df)              <span class="c-dim"># non-native sink #1 (JDBC MERGE on id)</span>\n  <span class="c-fn">post_to_api</span>(df, batch_id)            <span class="c-dim"># non-native sink #2 (idempotency key)</span>',
+  };
+
+  const srcEl = document.getElementById("fbSrc");
+  const destEl = document.getElementById("fbDest");
+  const srcSub = document.getElementById("fbSrcSub");
+  const destName = document.getElementById("fbDestName");
+  const destBadge = document.getElementById("fbDestBadge");
+  const bodyEl = document.getElementById("fbBody");
+  const arrow = document.getElementById("fbArrow");
+  const banner = document.getElementById("fbBanner");
+  const bannerTxt = document.getElementById("fbBannerTxt");
+  const nextBtn = document.getElementById("fbNext");
+  const refreshBtn = document.getElementById("fbRefresh");
+  const resetBtn = document.getElementById("fbReset");
+  const narr = document.getElementById("fbNarr");
+  const toggle = document.getElementById("fbToggle");
+
+  let mode = "postgres";
+  let srcRows = [], dest = [], offset = 0, batch = 0;
+  const wait = ms => gsap.to({}, { duration: ms * 1.7 / 1000 });
+  let run = 0; const live = my => my === run;
+
+  function applyMode() {
+    const d = DEST[mode];
+    destName.textContent = d.nm; destBadge.textContent = d.badge;
+    bodyEl.innerHTML = BODIES[mode];
+    [...toggle.children].forEach(b => b.classList.toggle("active", b.dataset.mode === mode));
+  }
+
+  function renderSrc() {
+    if (!srcRows.length) { srcEl.innerHTML = `<div class="enz-empty" style="padding:30px 10px;color:var(--muted);text-align:center;">Empty — run a micro-batch.</div>`; return; }
+    srcEl.innerHTML = srcRows.map((r,i) => `<div class="row ${r._new?"appended":""}" data-id="${r.id}">
+      <span class="part">${r.id}</span>
+      <span class="label">${r.label} ${i < offset ? '<span class="tag keep">written</span>' : '<span class="tag src">pending</span>'}</span>
+    </div>`).join("");
+  }
+  function renderDest() {
+    if (!dest.length) { destEl.innerHTML = `<div class="sink-empty">no writes yet — run a micro-batch</div>`; return; }
+    destEl.innerHTML = dest.map(d => `<div class="smsg" data-did="${d.id}">
+      <span class="skey">${d.id}</span><span>${d.label}</span><span class="soff">${d.merged ? "batch 0 ↺" : "batch " + d.batch}</span>
+    </div>`).join("");
+  }
+
+  function reset() {
+    run++;
+    srcRows = []; dest = []; offset = 0; batch = 0;
+    arrow.classList.remove("live");
+    banner.className = "recon";
+    applyMode(); renderSrc(); renderDest();
+    srcSub.textContent = "pipeline streaming table · offset 0";
+    nextBtn.disabled = false; nextBtn.textContent = "▶ Next micro-batch"; refreshBtn.disabled = true;
+    narr.innerHTML = "The <code class='kw'>events</code> table feeds a <b>foreach_batch sink</b>. Run a micro-batch and watch your handler write out.";
+  }
+
+  async function next() {
+    if (offset >= POOL.length) return;
+    const my = run;
+    nextBtn.disabled = true; refreshBtn.disabled = true;
+    srcRows.forEach(r => r._new = false);
+    const add = POOL.slice(srcRows.length, srcRows.length + 2);
+    add.forEach(r => srcRows.push({ ...r, _new: true }));
+    batch++;
+    renderSrc();
+    arrow.classList.add("live");
+    narr.innerHTML = `Micro-batch ${batch}: ${add.length} new records land in <code class='kw'>events</code>…`;
+    await wait(700); if (!live(my)) return;
+    const toWrite = srcRows.slice(offset);
+    const newRows = toWrite.map(r => { const d = { id: r.id, label: r.label, batch }; dest.push(d); return d; });
+    renderDest();
+    const els = newRows.map(d => destEl.querySelector(`[data-did="${d.id}"]`));
+    els.forEach(el => { if (el) gsap.set(el, { opacity: 0 }); });
+    for (let i = 0; i < els.length; i++) {
+      await wait(i === 0 ? 0 : 120); if (!live(my)) return;
+      if (els[i]) gsap.fromTo(els[i], { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: .3, ease: EASE.pop });
+    }
+    await wait(220); if (!live(my)) return;
+    offset = srcRows.length;
+    renderSrc();
+    srcSub.textContent = `pipeline streaming table · offset ${offset}`;
+    arrow.classList.remove("live");
+    banner.className = "recon diff show";
+    bannerTxt.innerHTML = `<code class='kw'>write_batch(df, batch_id=${batch})</code> ran once and wrote <b>${newRows.length}</b> row${newRows.length>1?"s":""} to <code class='kw'>${DEST[mode].nm}</code>. Offset advanced to <b>${offset}</b> — in normal streaming each row is handed to your function exactly once.`;
+    narr.innerHTML = "Your handler owns the write, so the target can be any external system.";
+    if (offset >= POOL.length) { nextBtn.disabled = true; nextBtn.textContent = "stream drained"; }
+    else nextBtn.disabled = false;
+    if (batch >= 2) refreshBtn.disabled = false;
+  }
+
+  async function refresh() {
+    const my = run;
+    nextBtn.disabled = true; refreshBtn.disabled = true;
+    arrow.classList.add("live");
+    banner.className = "recon show";
+    bannerTxt.innerHTML = `<b>Full refresh:</b> the stream replays from <code class='kw'>batch_id = 0</code>, so your handler re-runs over every micro-batch…`;
+    narr.innerHTML = "Replaying every batch through write_batch…";
+    srcRows.forEach(r => r._new = false);
+    offset = 0; renderSrc(); srcSub.textContent = "pipeline streaming table · offset 0 (replaying)";
+    await wait(750); if (!live(my)) return;
+    // idempotent: same ids MERGE in place, so no duplicate rows are created
+    dest.forEach(d => d.merged = true);
+    renderDest();
+    for (let i = 0; i < dest.length; i++) {
+      const el = destEl.querySelector(`[data-did="${dest[i].id}"]`);
+      if (el) gsap.fromTo(el, { backgroundColor: "#123024" }, { backgroundColor: "#16262d", duration: .6, ease: EASE.inOut });
+      await wait(140); if (!live(my)) return;
+    }
+    offset = srcRows.length; renderSrc();
+    srcSub.textContent = `pipeline streaming table · offset ${offset}`;
+    arrow.classList.remove("live");
+    banner.className = "recon diff show";
+    bannerTxt.innerHTML = `The replay re-sent all <b>${dest.length}</b> rows, but the handler keys on <code class='kw'>id</code> — the MERGE updated each row <b>in place</b>, so there are no duplicates. A blind <code class='kw'>append</code> would have doubled every row.`;
+    narr.innerHTML = "That's why the handler must handle a full refresh: batch_id is what lets you stay idempotent.";
+    refreshBtn.disabled = true;
+  }
+
+  toggle.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { if (b.dataset.mode === mode) return; mode = b.dataset.mode; applyMode(); }));
   nextBtn.addEventListener("click", next);
   refreshBtn.addEventListener("click", refresh);
   resetBtn.addEventListener("click", reset);

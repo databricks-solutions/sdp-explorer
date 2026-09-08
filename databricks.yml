@@ -21,6 +21,23 @@ resources:
           - python
           - app.py
 
+variables:
+  prod_service_principal:
+    description: "Application ID (client ID) of the service principal that prod resources run as."
+    # Replace with your prod service principal's application ID, or override at deploy time:
+    #   databricks bundle deploy -t prod --var="prod_service_principal=<app-id>"
+    default: "REPLACE_WITH_PROD_SP_APPLICATION_ID"
+
 targets:
+  # dev: runs as the user deploying the bundle.
   dev:
+    mode: development
     default: true
+    run_as:
+      user_name: ${workspace.current_user.userName}
+
+  # prod: runs as a service principal.
+  prod:
+    mode: production
+    run_as:
+      service_principal_name: ${var.prod_service_principal}
