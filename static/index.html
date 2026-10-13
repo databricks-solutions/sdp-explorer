@@ -730,6 +730,68 @@
   .wm-dot .dl { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); font-family: "DM Mono", monospace; font-size: 8px; white-space: nowrap; }
   .wm-dot.drop .dl { color: var(--red); font-weight: 700; }
 
+  /* ---------- PIPELINE TESTING card ---------- */
+  .pt-bar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .pt-bug { display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; color: var(--ink-2); cursor: pointer; user-select: none;
+    border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; background: #fff; transition: all .2s; }
+  .pt-bug input { accent-color: var(--red); margin: 0; }
+  .pt-bug:has(input:checked) { border-color: var(--target-line); background: var(--target-soft); color: var(--target); }
+  .pt-top { display: flex; justify-content: flex-end; margin: 0 0 14px; }
+  .pt-prod { font-family: "DM Mono", monospace; font-size: 11.5px; color: var(--keep); background: var(--keep-soft); border: 1px solid var(--keep-line); border-radius: 99px; padding: 3px 11px; }
+  .pt-sandbox { position: relative; border: 1.5px dashed var(--line); border-radius: 12px; padding: 24px 14px 14px; transition: border-color .4s, background .4s; }
+  .pt-sandbox.on { border-color: var(--blue); background: #f7fafd; }
+  .pt-sandbox.gone .tbl { opacity: .5; transition: opacity .6s; }
+  .pt-sb-lbl { position: absolute; top: -10px; left: 16px; background: #fff; padding: 0 8px; font-family: "DM Mono", monospace; font-size: 11.5px; color: var(--muted); }
+  .pt-sandbox.on .pt-sb-lbl { color: var(--blue); }
+  .pt-grid { display: grid; grid-template-columns: 1fr 210px 1fr; gap: 14px; }
+  .pt-grid .tbl-body { min-height: 236px; }
+  .pt-phase { font-family: var(--display); font-size: 9.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0 0 8px 2px; transition: color .3s; }
+  .pt-phase.on { color: var(--live); }
+  .pt-null { font-family: "DM Mono", monospace; font-size: 12px; color: var(--muted); font-style: italic; }
+  .pt-dag { display: flex; flex-direction: column; gap: 3px; }
+  .pt-node { border: 1px solid var(--line); border-radius: 8px; background: #fff; padding: 7px 10px; text-align: center; transition: all .3s; }
+  .pt-node b { display: block; font-family: "DM Mono", monospace; font-size: 12px; font-weight: 500; color: var(--ink); }
+  .pt-node .k { display: block; font-size: 10.5px; color: var(--muted); margin-top: 1px; }
+  .pt-node.mock { background: var(--src-soft); border-color: var(--src-line); }
+  .pt-node.mock b { color: var(--src); }
+  .pt-node.view { border-style: dashed; }
+  .pt-node.running { border-color: var(--live); box-shadow: 0 0 0 1px var(--live); }
+  .pt-node.done { background: var(--keep-soft); border-color: var(--keep-line); }
+  .pt-node.done b { color: var(--keep); }
+  .pt-node.skip { opacity: .5; border-style: dashed; background: var(--panel); }
+  .pt-link { text-align: center; color: var(--muted); font-size: 12px; line-height: 1; }
+  .pt-skipwrap { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .pt-runset { margin-top: 10px; font-family: "DM Mono", monospace; font-size: 10.5px; color: var(--ink-2); text-align: center; line-height: 1.5; }
+  .pt-low { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .pt-asserts { border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 10px 12px; }
+  .pt-ah { font-family: "DM Mono", monospace; font-size: 12px; color: var(--muted); padding: 2px 4px 6px; border-bottom: 1px solid var(--line-2); margin-bottom: 4px; }
+  .pt-assert { display: flex; gap: 9px; align-items: center; padding: 6px 4px; opacity: .45; transition: opacity .3s; }
+  .pt-assert code { font-family: "DM Mono", monospace; font-size: 12px; color: var(--ink-2); word-break: break-word; }
+  .pt-assert .st { width: 18px; height: 18px; flex: none; border-radius: 50%; border: 1.5px solid var(--line); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .pt-assert.pass { opacity: 1; }
+  .pt-assert.pass .st { border-color: var(--keep); color: var(--keep); background: var(--keep-soft); }
+  .pt-assert.fail { opacity: 1; }
+  .pt-assert.fail code { color: var(--ink); }
+  .pt-assert.fail .st { border-color: var(--red); color: #fff; background: var(--red); }
+  .pt-assert.skip { opacity: .4; }
+  .pt-assert.skip code::after { content: "  · not reached"; color: var(--muted); font-style: italic; }
+  .pt-console { background: #0e1b21; color: #cfd8dc; border-radius: 10px; padding: 12px 14px; font-family: "DM Mono", monospace; font-size: 11.5px; line-height: 1.7; min-height: 150px; max-height: 230px; white-space: pre-wrap; overflow: auto; }
+  .pt-console .ok { color: #5fd38d; }
+  .pt-console .bad { color: #ff7a66; }
+  .pt-console .dim { color: #7f9298; }
+  .recon.pass { background: var(--keep-soft); border-color: var(--keep-line); border-left-color: var(--keep); }
+  .recon.pass .ic { color: var(--keep); }
+  .recon.pass p { color: var(--ink-2); } .recon.pass b { color: var(--keep); }
+  .pt-how { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .pt-api { width: 100%; border-collapse: collapse; font-size: 13.5px; background: #fff; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .pt-api td { padding: 9px 14px; border-top: 1px solid var(--line-2); vertical-align: top; color: var(--ink-2); line-height: 1.45; }
+  .pt-api tr:first-child td { border-top: none; }
+  .pt-api td:first-child { font-family: "DM Mono", monospace; font-size: 12.5px; color: var(--blue); white-space: nowrap; width: 1%; }
+  @media (max-width: 900px){
+    .pt-grid, .pt-low { grid-template-columns: 1fr; }
+    .pt-how { grid-template-columns: 1fr 1fr; }
+  }
+
   @media (max-width: 900px){
     /* Stacked layout: fall back to a single natural page scroll (nav on top, then content). */
     body { height: auto; min-height: 100%; overflow: visible; display: block; }
@@ -926,6 +988,12 @@ const NAV = [
     ]
   },
   {
+    group: "Testing",
+    items: [
+      { id: "pipeline-testing", name: "Pipeline unit tests", status: "beta" },
+    ]
+  },
+  {
     group: "Deployment",
     items: [
       { id: "cicd-bundles", name: "CI/CD & Bundles", status: "ready" },
@@ -949,6 +1017,7 @@ const DEMOS = {
   "expectations": expectationsDemo,
   "quarantine": quarantineDemo,
   "cicd-bundles": cicdBundlesDemo,
+  "pipeline-testing": pipelineTestingDemo,
   "real-time-mode": realTimeModeDemo,
   "sinks": sinksDemo,
   "foreach-batch-sink": foreachBatchSinkDemo,
@@ -2816,6 +2885,133 @@ function watermarksDemo() {
   `;
 }
 
+/* ---------- PIPELINE TESTING ---------- */
+function pipelineTestingDemo() {
+  return `
+  <div class="crumb">SDP Explorer <span class="sep">›</span> Testing <span class="sep">›</span> <b>Pipeline unit tests</b></div>
+  <h1><span class="verb">Test</span> the pipeline</h1>
+  <p class="oneliner">The pipeline testing framework runs pytest tests against your pipeline's <em>real definitions</em>: mock the input tables, refresh only the tables under test, then assert on what they produced. Every table read and write is redirected into a <em>throwaway test schema</em>, so you can exercise AUTO CDC, expectations, and multi-update behaviour without touching production. Pick a scenario, run it, then inject a regression and watch the test catch it.</p>
+
+  <section>
+    <h2>Run a test</h2>
+    <div class="pt-bar">
+      <div class="cdc-toggle" id="ptToggle">
+        <button data-sc="transform">Transform logic</button>
+        <button data-sc="cdc">AUTO CDC edge case</button>
+        <button data-sc="expect">Expectations</button>
+        <button data-sc="multi">Across updates</button>
+      </div>
+      <label class="pt-bug"><input type="checkbox" id="ptBug"> Inject a regression</label>
+    </div>
+    <div class="cdc-mode-desc" id="ptDesc"></div>
+
+    <div class="stage">
+      <div class="pt-top"><span class="pt-prod" id="ptProd">🔒 main.retail · production tables untouched</span></div>
+      <div class="pt-sandbox" id="ptBox">
+        <span class="pt-sb-lbl" id="ptBoxLbl"></span>
+        <div class="pt-grid">
+          <div>
+            <div class="pt-phase" id="ptPh1">① Arrange · mock input</div>
+            <div class="tbl src-panel">
+              <div class="tbl-head"><div class="name" id="ptMockName"></div><div class="sub" id="ptMockSub"></div></div>
+              <div class="tbl-body gsap-rows" id="ptMock"></div>
+            </div>
+          </div>
+          <div>
+            <div class="pt-phase" id="ptPh2">② Act · run()</div>
+            <div class="pt-dag" id="ptDag"></div>
+          </div>
+          <div>
+            <div class="pt-phase" id="ptPh3">③ Assert · output</div>
+            <div class="tbl">
+              <div class="tbl-head"><div class="name" id="ptOutName"></div><div class="sub" id="ptOutSub"></div></div>
+              <div class="tbl-body gsap-rows" id="ptOut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pt-low">
+        <div class="pt-asserts" id="ptAsserts"></div>
+        <div class="pt-console" id="ptCon"></div>
+      </div>
+      <div class="recon" id="ptBanner"><span class="ic" id="ptBannerIc">✓</span><p id="ptBannerTxt"></p></div>
+      <div class="controls">
+        <button id="ptRun">▶ Run test</button>
+        <button id="ptReset" class="ghost">Reset</button>
+        <span class="narr" id="ptNarr"></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The pipeline, and the test that guards it</h2>
+    <div id="ptCode"></div>
+    <div class="note"><span class="ic">ⓘ</span><p>The test uses the <b>same table names</b> the pipeline reads and writes (<code class="kw">main.retail.raw_users</code>). Nothing in the pipeline changes for testing: no flags, no test-only branches. <code class="kw">test_spark</code> quietly resolves those names into the test schema instead.</p></div>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="pt-how">
+      <div class="box"><h3>① Isolate</h3><p><code class="kw">test_spark</code> is a SparkSession that redirects every <b>name-based</b> table read and write into a temporary <code class="kw">redirecting_&lt;id&gt;</code> schema in the pipeline's default catalog, dropped when the test ends.</p></div>
+      <div class="box"><h3>② Arrange</h3><p>Create mock inputs with plain SQL (<code class="kw">CREATE TABLE … AS SELECT * FROM VALUES</code>), a DataFrame, or Faker for volume. Keep them tiny and full of the edge cases you care about.</p></div>
+      <div class="box"><h3>③ Act</h3><p><code class="kw">test_pipeline.run()</code> runs a real, synchronous <b>selective refresh</b> of your pipeline's definitions on its own cluster. Pass a set of tables, or omit it to run every table.</p></div>
+      <div class="box"><h3>④ Assert</h3><p>Plain pytest. Read output tables through <code class="kw">test_spark</code>, or assert on the returned status: success, rows written per flow, and the run's event log.</p></div>
+    </div>
+    <div style="margin-top:20px;">
+      <table class="pt-api">
+        <tr><td>TestPipeline.active()</td><td>The pipeline open in the editor: its source, configuration, and default catalog and schema.</td></tr>
+        <tr><td>test_spark</td><td>pytest fixture. A SparkSession whose catalog tables are redirected to the temporary test schema.</td></tr>
+        <tr><td>test_pipeline.run(test_spark, {…})</td><td>Selective refresh of the named tables (all tables if omitted). Returns a <code class="kw">TestUpdateStatus</code>.</td></tr>
+        <tr><td>status.is_success</td><td>Whether the update completed.</td></tr>
+        <tr><td>status.flow_info["flow"]</td><td>Per-flow metrics: <code class="kw">records_written</code>, <code class="kw">duration</code>, <code class="kw">recompute_type</code>.</td></tr>
+        <tr><td>status.event_log</td><td>DataFrame of this run's events. The <code class="kw">details</code> column is raw JSON, so parse it before asserting on nested fields.</td></tr>
+      </table>
+    </div>
+    <div class="note"><span class="ic">▶</span><p><b>Getting started (Beta):</b> in the Lakeflow Pipelines Editor, <b>+ → Test</b> creates a test file, and <b>Generate tests</b> (or <code class="kw">/tests</code> in Genie Code agent mode) scaffolds tests from your pipeline code. Run one test from the gutter ▶ or the whole file with <b>Run tests in file</b>. Requires Databricks Runtime 18.1+, a <b>triggered</b> (not continuous) pipeline, pipeline <b>Owner</b>, and <code class="kw">USE CATALOG</code> + <code class="kw">CREATE SCHEMA</code> on the default catalog. Spark Connect is not supported.</p></div>
+    <div class="note"><span class="ic">≠</span><p><b>Tests vs. expectations.</b> <a href="#expectations">Expectations</a> guard <em>data</em> at runtime, on every update in production. Tests guard <em>code</em> at development time, before a change ships. The two together catch both bad inputs and bad logic.</p></div>
+  </section>
+
+  <section>
+    <h2>What the sandbox covers, and what it doesn't</h2>
+    <div class="grid2">
+      <div class="box good">
+        <h3>Redirected to the test schema</h3>
+        <p>Anything addressed by <b>table name</b>: <code class="kw">spark.read.table</code>, <code class="kw">readStream.table</code>, <code class="kw">CREATE TABLE</code>, <code class="kw">INSERT</code>, <code class="kw">TRUNCATE</code>, and every dataset the pipeline defines. This is what makes mocking free.</p>
+      </div>
+      <div class="box bad">
+        <h3>Bypasses isolation, acts on real systems</h3>
+        <p>Reads or writes by <b>path</b> (<code class="kw">/Volumes/…</code>, <code class="kw">s3://</code>, <code class="kw">abfss://</code>), <b>connectors</b> (Auto Loader, Kafka), <b>governance</b> (<code class="kw">GRANT</code>, <code class="kw">REVOKE</code>, <code class="kw">OWNER TO</code>), and catalog or schema <b>DDL</b>.</p>
+      </div>
+    </div>
+    <div class="note"><span class="ic">✎</span><p><b>Design for testability:</b> keep connector reads (Auto Loader, Kafka) in a thin bronze layer, and point tests at the first <em>name-based</em> table downstream of it. Mock that table, and everything after it (the logic worth testing) runs fully inside the sandbox.</p></div>
+  </section>
+
+  <section>
+    <h2>When to leverage it</h2>
+    <div class="grid2">
+      <div>
+        <div class="col-h">Reach for it when</div>
+        <ul class="clean">
+          <li>A bug would be <b>silent</b>: aggregations, joins, NULL handling. The update succeeds; only the values are wrong.</li>
+          <li>You rely on SDP-specific semantics (AUTO CDC sequencing, SCD2 history, expectations, append flows) that plain PySpark unit tests can't exercise.</li>
+          <li>You're refactoring: pin today's behaviour in a test first, then change the code.</li>
+          <li>Behaviour depends on state across updates: call <code class="kw">run()</code> more than once in a single test.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="col-h">Watch out</div>
+        <ul class="clean watch">
+          <li>Path, connector, governance, and DDL operations escape the sandbox and touch real systems.</li>
+          <li>Runs from the Lakeflow Pipelines Editor on the pipeline's own compute; test runs are <b>billed</b> like normal updates.</li>
+          <li>Don't run tests while the pipeline is running an update. Selective refresh only, no full refresh, triggered mode only.</li>
+          <li>An abnormally terminated run can leave a <code class="kw">redirecting_&lt;id&gt;</code> schema behind; drop it by hand.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  `;
+}
+
 /* ============================================================
    RUNTIME
    ============================================================ */
@@ -2858,6 +3054,7 @@ function route(id) {
     if (id === "expectations") wireExpectations();
     if (id === "quarantine") wireQuarantine();
     if (id === "cicd-bundles") wireCicdBundles();
+    if (id === "pipeline-testing") wirePipelineTesting();
     if (id === "real-time-mode") wireRealTimeMode();
     if (id === "sinks") wireSinks();
     if (id === "foreach-batch-sink") wireForeachBatchSink();
@@ -5594,6 +5791,504 @@ function wireWatermarks() {
   }
 
   nextBtn.addEventListener("click", step);
+  resetBtn.addEventListener("click", reset);
+  reset();
+}
+
+/* Minimal single-pass Python highlighter for the testing card's code blocks.
+   Lines starting with ">>" are wrapped in .hl (the line under test). */
+function pyHL(src) {
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  src = src.split("\n").map(l => l.startsWith(">>") ? "\u0001" + l.slice(2) + "\u0002" : l).join("\n");
+  const re = /("""[\s\S]*?"""|"[^"\n]*"|'[^'\n]*')|(#[^\n\u0002]*)|(@[\w.]+)|\b(def|return|import|from|assert|for|in|and|is|as|None)\b|\b(\d+)\b/g;
+  let out = "", last = 0, m;
+  while ((m = re.exec(src))) {
+    out += esc(src.slice(last, m.index));
+    const cls = m[1] ? "c-str" : m[2] ? "c-dim" : (m[3] || m[4]) ? "c-key" : "c-num";
+    out += `<span class="${cls}">${esc(m[0])}</span>`;
+    last = re.lastIndex;
+  }
+  out += esc(src.slice(last));
+  return out.replace(/\u0001/g, '<span class="hl">').replace(/\u0002/g, "</span>");
+}
+
+/* ---------- PIPELINE TESTING wiring ---------- */
+function wirePipelineTesting() {
+  const SCHEMA = "redirecting_7f3a";
+  const NULL = '<span class="pt-null">NULL</span>';
+  const cur = '<span class="tag keep">current</span>';
+  const closed = '<span class="tag target">closed</span>';
+  const TEST_HDR = `import pytest
+from pyspark.pipelines.testing import TestPipeline, test_spark
+
+test_pipeline = TestPipeline.active()
+
+`;
+
+  // Each scenario: mock input(s) per update, the DAG, expected output per update
+  // (ok / with the regression), and the assertions in test order. `fails` marks the
+  // assertion that breaks under the regression; pytest stops there.
+  const SCEN = {
+    transform: {
+      desc: "<b>Transform logic.</b> Mock a tiny input that contains the edge case on purpose (two <code class='kw'>NULL</code> emails), refresh two tables, and assert on the aggregated <em>values</em>.",
+      mockTable: "main.retail.raw_users", outTable: "main.retail.users_by_type", outSub: "materialized view",
+      dag: [
+        { t: "raw_users", k: "mock input", role: "mock" },
+        { t: "users", k: "table", role: "sel" },
+        { t: "users_by_type", k: "materialized view", role: "sel" },
+      ],
+      skip: { t: "vip_report", k: "materialized view" },
+      steps: [{
+        sql: `CREATE TABLE main.retail.raw_users → ${SCHEMA}.raw_users`,
+        narr: "Arrange: <code class='kw'>CREATE TABLE raw_users</code> on <code class='kw'>test_spark</code> lands in the test schema, under the exact name the pipeline reads.",
+        mockSub: "mock · 4 rows · 2 NULL emails",
+        mock: [
+          { k: "u1", p: "1", l: "alice@x.ca", a: "admin" },
+          { k: "u2", p: "2", l: NULL, a: "user" },
+          { k: "u3", p: "3", l: "chen@x.ca", a: "user" },
+          { k: "u4", p: "4", l: NULL, a: "admin" },
+        ],
+        out: {
+          ok:  [{ k: "admin", p: "admin", l: "total_count 2", a: "valid_emails 1" }, { k: "user", p: "user", l: "total_count 2", a: "valid_emails 1" }],
+          bug: [{ k: "admin", p: "admin", l: "total_count 2", a: "valid_emails <b>2</b>" }, { k: "user", p: "user", l: "total_count 2", a: "valid_emails <b>2</b>" }],
+        },
+      }],
+      failRows: ["admin"],
+      testName: "test_users_by_type", testFile: "tests/test_users.py", pipeFile: "transformations/users.py",
+      asserts: [
+        { c: "status.is_success" },
+        { c: 'admin["total_count"] == 2' },
+        { c: 'admin["valid_emails"] == 1', fails: "assert 2 == 1" },
+      ],
+      pass: "All three assertions held: the aggregate counts users per type and ignores <code class='kw'>NULL</code> emails. Only <b>users</b> and <b>users_by_type</b> were refreshed (<b>vip_report</b> never ran), and every table lived in the throwaway schema.",
+      fail: "<b>Regression caught.</b> Swapping <code class='kw'>count_if(email IS NOT NULL)</code> for <code class='kw'>count(\"*\")</code> still runs cleanly (the update <em>succeeds</em>) but counts NULL emails as valid. Only a test on the values catches that, and it did, in a sandbox, before any deploy.",
+      swap: {
+        ok:  '>>            count_if(col("email").isNotNull()).alias("valid_emails"),',
+        bug: '>>            count("*").alias("valid_emails"),   # ← regression: counts NULL emails too',
+      },
+      pipe: `from pyspark import pipelines as dp
+from pyspark.sql.functions import col, count, count_if
+
+@dp.table
+def users():
+    return spark.read.table("raw_users").select("user_id", "email", "user_type")
+
+@dp.materialized_view
+def users_by_type():
+    return (
+        spark.read.table("users")
+        .groupBy("user_type")
+        .agg(
+            count("user_id").alias("total_count"),
+{{SWAP}}
+        )
+    )`,
+      test: TEST_HDR + `def test_users_by_type(test_spark):
+    # Arrange: same table name the pipeline reads, redirected to the test schema
+    test_spark.sql("""
+        CREATE TABLE main.retail.raw_users AS SELECT * FROM VALUES
+            (1, 'alice@x.ca', 'admin'), (2, NULL, 'user'),
+            (3, 'chen@x.ca',  'user'),  (4, NULL, 'admin')
+        AS t(user_id, email, user_type)
+    """)
+
+    # Act: selective refresh of only the tables under test
+    status = test_pipeline.run(test_spark,
+        {"main.retail.users", "main.retail.users_by_type"})
+    assert status.is_success
+
+    # Assert
+    admin = (test_spark.table("main.retail.users_by_type")
+             .filter("user_type = 'admin'").first())
+    assert admin["total_count"] == 2
+>>    assert admin["valid_emails"] == 1    # NULL emails must not count`,
+    },
+
+    cdc: {
+      desc: "<b>AUTO CDC edge case.</b> Feed a change stream where an <em>older</em> event arrives <em>last</em>, and assert that the newest <code class='kw'>event_ts</code> still wins. Out-of-order data is rare in dev and hard to reproduce on live tables; here it's four rows.",
+      mockTable: "main.retail.customer_changes", outTable: "main.retail.customers", outSub: "streaming table · AUTO CDC · SCD type 1",
+      dag: [
+        { t: "customer_changes", k: "mock change feed", role: "mock" },
+        { t: "changes", k: "view · computed inline", role: "view" },
+        { t: "customers", k: "streaming table · AUTO CDC", role: "sel" },
+      ],
+      skip: { t: "customers_by_city", k: "materialized view" },
+      steps: [{
+        sql: `CREATE TABLE main.retail.customer_changes → ${SCHEMA}.customer_changes`,
+        narr: "Arrange: a 4-event change feed. The last event to arrive (Ottawa) is actually <b>older</b> than Montréal.",
+        mockSub: "mock · 4 change events, one out of order",
+        mock: [
+          { k: "m1", p: "c1", l: "Toronto · ev 10:00", a: "arrival 1" },
+          { k: "m2", p: "c2", l: "Halifax · ev 10:05", a: "arrival 2" },
+          { k: "m3", p: "c1", l: "Montréal · ev 10:30", a: "arrival 3" },
+          { k: "m4", p: "c1", l: 'Ottawa · ev 10:15 <span class="badge-warn">late</span>', a: "arrival 4" },
+        ],
+        out: {
+          ok:  [{ k: "c1", p: "c1", l: "Montréal", a: "ev 10:30" }, { k: "c2", p: "c2", l: "Halifax", a: "ev 10:05" }],
+          bug: [{ k: "c1", p: "c1", l: "Ottawa", a: "ev 10:15" }, { k: "c2", p: "c2", l: "Halifax", a: "ev 10:05" }],
+        },
+      }],
+      failRows: ["c1"],
+      testName: "test_late_event_does_not_win", testFile: "tests/test_customers.py", pipeFile: "transformations/customers.py",
+      asserts: [
+        { c: "status.is_success" },
+        { c: 'set(rows) == {"c1", "c2"}' },
+        { c: 'rows["c1"]["city"] == "Montréal"', fails: "assert 'Ottawa' == 'Montréal'" },
+      ],
+      pass: "The late <b>Ottawa</b> event (older <code class='kw'>event_ts</code>, newest arrival) did not overwrite <b>Montréal</b>: AUTO CDC sequenced by event time. One key per customer, latest version wins.",
+      fail: "<b>Regression caught.</b> Sequencing by <code class='kw'>_arrival_seq</code> lets the late event win, so c1 regresses to Ottawa. The update still <em>succeeds</em>; without this test the stale value would ship silently.",
+      swap: {
+        ok:  '>>    sequence_by=col("event_ts"),',
+        bug: '>>    sequence_by=col("_arrival_seq"),   # ← regression: arrival order, not event time',
+      },
+      pipe: `from pyspark import pipelines as dp
+from pyspark.sql.functions import col
+
+@dp.view
+def changes():
+    return spark.readStream.table("customer_changes")
+
+dp.create_streaming_table("customers")
+
+dp.create_auto_cdc_flow(
+    target="customers",
+    source="changes",
+    keys=["id"],
+{{SWAP}}
+    stored_as_scd_type=1,
+)`,
+      test: TEST_HDR + `def test_late_event_does_not_win(test_spark):
+    test_spark.sql("""
+        CREATE TABLE main.retail.customer_changes AS SELECT * FROM VALUES
+            ('c1', 'Toronto',  TIMESTAMP'2026-10-01 10:00', 1),
+            ('c2', 'Halifax',  TIMESTAMP'2026-10-01 10:05', 2),
+            ('c1', 'Montréal', TIMESTAMP'2026-10-01 10:30', 3),
+            ('c1', 'Ottawa',   TIMESTAMP'2026-10-01 10:15', 4)  -- older, arrives last
+        AS t(id, city, event_ts, _arrival_seq)
+    """)
+
+    status = test_pipeline.run(test_spark, {"main.retail.customers"})
+    assert status.is_success
+
+    rows = {r["id"]: r for r in test_spark.table("main.retail.customers").collect()}
+    assert set(rows) == {"c1", "c2"}
+>>    assert rows["c1"]["city"] == "Montréal"   # newest event_ts wins`,
+    },
+
+    expect: {
+      desc: "<b>Expectations.</b> Mix valid and invalid rows, then assert on both the output table and the run's own <code class='kw'>flow_info</code> metrics. You can test that a rule <em>enforces</em>, not just that it exists.",
+      mockTable: "main.retail.raw_orders", outTable: "main.retail.orders_clean", outSub: "table · expect_or_drop(amount > 0)",
+      dag: [
+        { t: "raw_orders", k: "mock input", role: "mock" },
+        { t: "orders_clean", k: "table · expectation", role: "sel" },
+      ],
+      skip: { t: "orders_daily", k: "materialized view" },
+      steps: [{
+        sql: `CREATE TABLE main.retail.raw_orders → ${SCHEMA}.raw_orders`,
+        narr: "Arrange: 5 orders, 2 of them with <code class='kw'>amount ≤ 0</code>.",
+        mockSub: "mock · 5 orders · 2 invalid",
+        mock: [
+          { k: "o1", p: "o-01", l: "ON", a: "$120" },
+          { k: "o2", p: "o-02", l: 'BC <span class="badge-bad">amount ≤ 0</span>', a: "$0", cls: "bad" },
+          { k: "o3", p: "o-03", l: "QC", a: "$88" },
+          { k: "o4", p: "o-04", l: 'AB <span class="badge-bad">amount ≤ 0</span>', a: "-$15", cls: "bad" },
+          { k: "o5", p: "o-05", l: "NS", a: "$64" },
+        ],
+        out: {
+          ok:  [{ k: "o1", p: "o-01", l: "ON", a: "$120" }, { k: "o3", p: "o-03", l: "QC", a: "$88" }, { k: "o5", p: "o-05", l: "NS", a: "$64" }],
+          bug: [{ k: "o1", p: "o-01", l: "ON", a: "$120" }, { k: "o2", p: "o-02", l: "BC", a: "$0" }, { k: "o3", p: "o-03", l: "QC", a: "$88" },
+                { k: "o4", p: "o-04", l: "AB", a: "-$15" }, { k: "o5", p: "o-05", l: "NS", a: "$64" }],
+        },
+      }],
+      failRows: ["o2", "o4"],
+      testName: "test_bad_amounts_are_dropped", testFile: "tests/test_orders.py", pipeFile: "transformations/orders.py",
+      asserts: [
+        { c: "status.is_success" },
+        { c: 'status.flow_info["orders_clean"].records_written == 3', fails: "assert 5 == 3" },
+        { c: 'orders.filter("amount &lt;= 0").count() == 0' },
+      ],
+      pass: "<code class='kw'>status.flow_info</code> reports <b>3</b> records written: the expectation dropped both non-positive amounts. You can assert on the run's metrics, not only on the table.",
+      fail: "<b>Regression caught.</b> Downgrading <code class='kw'>@dp.expect_or_drop</code> to <code class='kw'>@dp.expect</code> (warn only) let the bad rows through: 5 records written instead of 3. The pipeline was green; the test was not.",
+      swap: {
+        ok:  '>>@dp.expect_or_drop("positive_amount", "amount > 0")',
+        bug: '>>@dp.expect("positive_amount", "amount > 0")   # ← regression: warn only, rows kept',
+      },
+      pipe: `from pyspark import pipelines as dp
+
+@dp.table
+{{SWAP}}
+def orders_clean():
+    return spark.read.table("raw_orders")`,
+      test: TEST_HDR + `def test_bad_amounts_are_dropped(test_spark):
+    test_spark.sql("""
+        CREATE TABLE main.retail.raw_orders AS SELECT * FROM VALUES
+            ('o-01', 'ON', 120), ('o-02', 'BC', 0), ('o-03', 'QC', 88),
+            ('o-04', 'AB', -15), ('o-05', 'NS', 64)
+        AS t(order_id, region, amount)
+    """)
+
+    status = test_pipeline.run(test_spark, {"main.retail.orders_clean"})
+    assert status.is_success
+>>    assert status.flow_info["orders_clean"].records_written == 3
+
+    orders = test_spark.table("main.retail.orders_clean")
+    assert orders.filter("amount <= 0").count() == 0`,
+    },
+
+    multi: {
+      desc: "<b>Across updates.</b> Call <code class='kw'>run()</code> twice in one test, changing the mock snapshot in between, to test stateful behaviour that only shows up on the <em>second</em> update, like SCD type 2 history.",
+      mockTable: "main.retail.customer_snapshot", outTable: "main.retail.customers_hist", outSub: "streaming table · AUTO CDC FROM SNAPSHOT · SCD2",
+      dag: [
+        { t: "customer_snapshot", k: "mock snapshot", role: "mock" },
+        { t: "snapshot_src", k: "view · computed inline", role: "view" },
+        { t: "customers_hist", k: "streaming table · from snapshot", role: "sel" },
+      ],
+      skip: { t: "customers_current", k: "materialized view" },
+      steps: [{
+        sql: `CREATE TABLE main.retail.customer_snapshot → ${SCHEMA}.customer_snapshot`,
+        narr: "Arrange, day 1: the snapshot holds c1 in Toronto and c2 in Halifax.",
+        mockSub: "mock · day 1 snapshot",
+        mock: [{ k: "s1", p: "c1", l: "Toronto", a: "" }, { k: "s2", p: "c2", l: "Halifax", a: "" }],
+        out: {
+          ok:  [{ k: "c1a", p: "c1", l: "Toronto", a: cur }, { k: "c2a", p: "c2", l: "Halifax", a: cur }],
+          bug: [{ k: "c1a", p: "c1", l: "Toronto", a: "" }, { k: "c2a", p: "c2", l: "Halifax", a: "" }],
+        },
+      }, {
+        sql: `TRUNCATE + INSERT main.retail.customer_snapshot → ${SCHEMA}.customer_snapshot`,
+        narr: "Arrange, day 2: <code class='kw'>TRUNCATE</code> + <code class='kw'>INSERT</code> the next snapshot. c1 is gone; c2 moved to Moncton.",
+        mockSub: "mock · day 2 snapshot",
+        mock: [{ k: "s3", p: "c2", l: "Moncton", a: "" }],
+        out: {
+          ok:  [{ k: "c1a", p: "c1", l: "Toronto", a: closed }, { k: "c2a", p: "c2", l: "Halifax", a: closed }, { k: "c2b", p: "c2", l: "Moncton", a: cur }],
+          bug: [{ k: "c2a", p: "c2", l: "Moncton", a: "" }],
+        },
+      }],
+      failRows: ["c2a"],
+      testName: "test_history_across_two_snapshots", testFile: "tests/test_customers_hist.py", pipeFile: "transformations/customers_hist.py",
+      asserts: [
+        { c: "status.is_success" },
+        { c: "hist.count() == 3", fails: "assert 1 == 3" },
+        { c: 'cur["city"] == "Moncton"' },
+      ],
+      pass: "Two <code class='kw'>run()</code> calls in one test simulate two days. The second snapshot closed c1 (deleted) and the old c2 version, and opened <b>Moncton</b> as current: 3 rows of history.",
+      fail: "<b>Regression caught.</b> With <code class='kw'>stored_as_scd_type=1</code> the second snapshot overwrote history: 1 row instead of 3. Only a test that runs the pipeline <em>twice</em> can see this; a single update looks identical either way.",
+      swap: {
+        ok:  ">>    stored_as_scd_type=2,",
+        bug: ">>    stored_as_scd_type=1,   # ← regression: history overwritten",
+      },
+      pipe: `from pyspark import pipelines as dp
+
+@dp.view
+def snapshot_src():
+    return spark.read.table("customer_snapshot")
+
+dp.create_streaming_table("customers_hist")
+
+dp.create_auto_cdc_from_snapshot_flow(
+    target="customers_hist",
+    source="snapshot_src",
+    keys=["id"],
+{{SWAP}}
+)`,
+      test: TEST_HDR + `def test_history_across_two_snapshots(test_spark):
+    # Day 1
+    test_spark.sql("""
+        CREATE TABLE main.retail.customer_snapshot AS SELECT * FROM VALUES
+            ('c1', 'Toronto'), ('c2', 'Halifax') AS t(id, city)
+    """)
+    test_pipeline.run(test_spark, {"main.retail.customers_hist"})
+
+    # Day 2: c1 is gone, c2 moved
+    test_spark.sql("TRUNCATE TABLE main.retail.customer_snapshot")
+    test_spark.sql("INSERT INTO main.retail.customer_snapshot VALUES ('c2', 'Moncton')")
+    status = test_pipeline.run(test_spark, {"main.retail.customers_hist"})
+    assert status.is_success
+
+    hist = test_spark.table("main.retail.customers_hist")
+>>    assert hist.count() == 3             # 2 closed versions + 1 current
+    cur = hist.filter("id = 'c2' AND __END_AT IS NULL").first()
+    assert cur["city"] == "Moncton"`,
+    },
+  };
+
+  const $ = id => document.getElementById(id);
+  const toggle = $("ptToggle"), bugBox = $("ptBug"), box = $("ptBox"), boxLbl = $("ptBoxLbl");
+  const ph = [$("ptPh1"), $("ptPh2"), $("ptPh3")];
+  const mockEl = $("ptMock"), outEl = $("ptOut"), dag = $("ptDag"), con = $("ptCon"), asserts = $("ptAsserts");
+  const banner = $("ptBanner"), bannerIc = $("ptBannerIc"), bannerTxt = $("ptBannerTxt");
+  const runBtn = $("ptRun"), resetBtn = $("ptReset"), narr = $("ptNarr"), prod = $("ptProd");
+
+  let sc = "transform", bug = false, run2 = 0;
+  const live = my => my === run2;
+  const wait = ms => gsap.to({}, { duration: ms / 1000 });
+  const rowHtml = r => `<div class="row ${r.cls || ""}" data-k="${r.k}"><span class="part">${r.p}</span><span class="label">${r.l}</span><span class="amt">${r.a}</span></div>`;
+  const empty = t => `<div class="enz-empty">${t}</div>`;
+  const log = html => { con.insertAdjacentHTML("beforeend", "\n" + html); con.scrollTop = con.scrollHeight; };
+  const runSet = s => s.dag.filter(n => n.role === "sel").map(n => n.t);
+
+  function renderDag() {
+    const s = SCEN[sc];
+    dag.innerHTML = s.dag.map((n, i) =>
+      `${i ? '<div class="pt-link">↓</div>' : ""}<div class="pt-node ${n.role}"><b>${n.t}</b><span class="k">${n.k}</span></div>`).join("")
+      + (s.skip ? `<div class="pt-skipwrap"><div class="pt-node skip"><b>${s.skip.t}</b><span class="k">${s.skip.k} · not in run set</span></div></div>` : "")
+      + `<div class="pt-runset">run set:<br>{${runSet(s).join(", ")}}</div>`;
+  }
+
+  function renderAsserts() {
+    const s = SCEN[sc];
+    asserts.innerHTML = `<div class="pt-ah">${s.testFile}::${s.testName}</div>`
+      + s.asserts.map((a, i) => `<div class="pt-assert" data-i="${i}"><span class="st"></span><code>assert ${a.c}</code></div>`).join("");
+  }
+
+  function renderCode() {
+    const s = SCEN[sc];
+    const pipe = s.pipe.replace("{{SWAP}}", bug ? s.swap.bug : s.swap.ok);
+    $("ptCode").innerHTML = `
+      <div class="code-card"><div class="bar">${s.pipeFile} · pipeline source${bug ? " · regression injected" : ""}</div><div class="sql">${pyHL(pipe)}</div></div>
+      <div class="code-card"><div class="bar">${s.testFile} · test</div><div class="sql">${pyHL(s.test)}</div></div>`;
+  }
+
+  function reset() {
+    run2++;
+    document.querySelectorAll(".fly-clone").forEach(c => c.remove());
+    const s = SCEN[sc];
+    [...toggle.children].forEach(b => b.classList.toggle("active", b.dataset.sc === sc));
+    bugBox.checked = bug;
+    $("ptDesc").innerHTML = s.desc;
+    box.className = "pt-sandbox";
+    boxLbl.textContent = "test schema · created when the test starts";
+    ph.forEach(p => p.classList.remove("on"));
+    $("ptMockName").textContent = s.mockTable;
+    $("ptMockSub").textContent = "not created yet";
+    mockEl.innerHTML = empty("no mock data yet");
+    $("ptOutName").textContent = s.outTable;
+    $("ptOutSub").textContent = s.outSub;
+    outEl.innerHTML = empty("not refreshed yet");
+    renderDag(); renderAsserts(); renderCode();
+    con.innerHTML = `<span class="dim">${s.testFile} · ready</span>`;
+    banner.className = "recon";
+    runBtn.disabled = false;
+    narr.innerHTML = bug
+      ? "A regression is injected into the pipeline source below. Run the test and see whether it notices."
+      : "Run the test: mock the input, refresh only the tables under test, then assert.";
+  }
+
+  async function swapMock(rows, replacing, my) {
+    if (replacing) {
+      await anim([...mockEl.children], { opacity: 0, x: 30, duration: .3, stagger: .05, ease: EASE.in });
+      if (!live(my)) return;
+    }
+    mockEl.innerHTML = rows.map(rowHtml).join("");
+    await gsap.fromTo([...mockEl.children], { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: .35, stagger: .09, ease: EASE.out });
+  }
+
+  async function lightDag(my) {
+    const nodes = [...dag.querySelectorAll(".pt-node.view, .pt-node.sel")];
+    nodes.forEach(n => n.classList.remove("running", "done"));
+    for (const n of nodes) {
+      n.classList.add("running");
+      await wait(600); if (!live(my)) return;
+      n.classList.remove("running"); n.classList.add("done");
+    }
+  }
+
+  // Rows leaving the output slide out, surviving rows flash (state changed in place),
+  // new rows fly in from the last refreshed node.
+  async function landOut(prev, rows, my) {
+    const newK = new Set(rows.map(r => r.k)), prevK = new Set(prev.map(r => r.k));
+    const leaving = [...outEl.querySelectorAll(".row")].filter(el => !newK.has(el.dataset.k));
+    if (leaving.length) { await anim(leaving, { opacity: 0, x: 30, duration: .35, ease: EASE.in }); if (!live(my)) return; }
+    outEl.innerHTML = rows.length ? rows.map(rowHtml).join("") : empty("no rows");
+    const els = [...outEl.querySelectorAll(".row")];
+    els.filter(el => prevK.has(el.dataset.k)).forEach(el =>
+      gsap.fromTo(el, { boxShadow: "0 0 0 2px #f3e2a6" }, { boxShadow: "0 0 0 0px rgba(243,226,166,0)", duration: 1.2 }));
+    const entering = els.filter(el => !prevK.has(el.dataset.k));
+    entering.forEach(el => gsap.set(el, { opacity: 0 }));
+    const from = [...dag.querySelectorAll(".pt-node.sel")].pop();
+    for (const el of entering) {
+      await flyRow(from, el, { cloneOf: "to", duration: .5 }); if (!live(my)) return;
+    }
+  }
+
+  async function run() {
+    reset();
+    const my = run2, s = SCEN[sc];
+    runBtn.disabled = true;
+    con.innerHTML = `<span class="dim">$ Run tests in file · ${s.testFile}</span>`;
+    box.classList.add("on");
+    boxLbl.textContent = `${SCHEMA} · temporary test schema`;
+    log(`<span class="dim">  test_spark: table names now resolve to ${SCHEMA}</span>`);
+    narr.innerHTML = "<code class='kw'>test_spark</code> opens a session whose table names resolve into a <b>temporary schema</b>.";
+    await wait(900); if (!live(my)) return;
+
+    let prev = [];
+    for (let i = 0; i < s.steps.length; i++) {
+      const st = s.steps[i], multi = s.steps.length > 1;
+      ph[0].classList.add("on"); ph[1].classList.remove("on"); ph[2].classList.remove("on");
+      narr.innerHTML = st.narr;
+      log(`  ${st.sql}`);
+      await swapMock(st.mock, i > 0, my); if (!live(my)) return;
+      $("ptMockSub").textContent = st.mockSub;
+      await wait(700); if (!live(my)) return;
+
+      ph[1].classList.add("on");
+      narr.innerHTML = `Act${multi ? `, update ${i + 1}` : ""}: <code class='kw'>test_pipeline.run()</code> refreshes only the run set, on the pipeline's own cluster.`;
+      log(`  test_pipeline.run(test_spark, {${runSet(s).join(", ")}})${multi ? `   <span class="dim"># update ${i + 1}</span>` : ""}`);
+      await lightDag(my); if (!live(my)) return;
+
+      ph[2].classList.add("on");
+      const rows = bug ? st.out.bug : st.out.ok;
+      await landOut(prev, rows, my); if (!live(my)) return;
+      prev = rows;
+      log(`<span class="dim">  update COMPLETED · ${rows.length} row(s) in ${s.outTable.split(".").pop()}</span>`);
+      await wait(700); if (!live(my)) return;
+    }
+
+    narr.innerHTML = "Assert: pytest runs the assertions top to bottom and stops at the first one that fails.";
+    let failed = -1;
+    for (let i = 0; i < s.asserts.length; i++) {
+      const el = asserts.querySelector(`[data-i="${i}"]`);
+      const fails = bug && s.asserts[i].fails;
+      el.classList.add(fails ? "fail" : "pass");
+      el.querySelector(".st").textContent = fails ? "✕" : "✓";
+      gsap.from(el, { x: -8, duration: .3, ease: EASE.out });
+      await wait(550); if (!live(my)) return;
+      if (fails) { failed = i; break; }
+    }
+    if (failed >= 0) {
+      asserts.querySelectorAll(".pt-assert:not(.pass):not(.fail)").forEach(el => { el.classList.add("skip"); el.querySelector(".st").textContent = "·"; });
+      s.failRows.forEach(k => outEl.querySelector(`[data-k="${k}"]`)?.classList.add("bad"));
+      const a = s.asserts[failed];
+      log(`<span class="bad">${s.testFile}::${s.testName} FAILED</span>`);
+      log(`<span class="bad">&gt;       assert ${a.c}</span>`);
+      log(`<span class="bad">E       ${a.fails}</span>`);
+    } else {
+      outEl.querySelectorAll(".row").forEach(el => el.classList.add("keep"));
+      log(`<span class="ok">${s.testFile}::${s.testName} PASSED</span>`);
+    }
+    await wait(600); if (!live(my)) return;
+
+    log(`<span class="dim">  teardown: DROP SCHEMA ${SCHEMA} CASCADE</span>`);
+    box.classList.remove("on"); box.classList.add("gone");
+    boxLbl.textContent = `${SCHEMA} · dropped after the test`;
+    gsap.fromTo(prod, { boxShadow: "0 0 0 3px var(--keep-line)" }, { boxShadow: "0 0 0 0px rgba(0,0,0,0)", duration: 1.2 });
+    log(failed < 0 ? `<span class="ok">1 passed</span>` : `<span class="bad">1 failed</span>`);
+
+    banner.className = "recon show " + (failed < 0 ? "pass" : "fail");
+    bannerIc.textContent = failed < 0 ? "✓" : "✕";
+    bannerTxt.innerHTML = failed < 0 ? s.pass : s.fail;
+    narr.innerHTML = failed < 0
+      ? (bug ? "" : "Passed. Now tick <b>Inject a regression</b> and run it again.")
+      : "Caught in the sandbox: the regression fails the test before it can reach production.";
+    runBtn.disabled = false;
+  }
+
+  toggle.querySelectorAll("button").forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.sc === sc) return;
+    sc = b.dataset.sc; reset();
+  }));
+  bugBox.addEventListener("change", () => { bug = bugBox.checked; reset(); });
+  runBtn.addEventListener("click", run);
   resetBtn.addEventListener("click", reset);
   reset();
 }
