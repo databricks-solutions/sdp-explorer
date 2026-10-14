@@ -4,7 +4,7 @@ Interactive feature demonstrations for **Lakeflow Spark Declarative Pipelines (S
 
 Each SDP feature is a browsable card whose hero is an **animation of what the feature does to your data**, followed by the SQL/Python and an honest "when to leverage / watch out" digest. It is a self-contained teaching app: a small FastAPI server serving one static HTML/JS file — no notebooks, datasets, or pipelines are provisioned, and all sample data shown is **synthetic and generated in-browser**.
 
-Cards covered include: Streaming Tables, Materialized Views, Enzyme incremental refresh, AUTO CDC (SCD1/2, from-snapshot, bitemporal), Append flows, REPLACE WHERE, Expectations, Quarantine, Sinks, Row filters & column masks, Liquid clustering, Private datasets, Watermarks, Real-time mode, Rewind & Replay, and CI/CD with Databricks Asset Bundles.
+Cards covered include: Streaming Tables, Materialized Views, Enzyme incremental refresh, AUTO CDC (SCD1/2, from-snapshot, bitemporal), Append flows, REPLACE WHERE, Expectations, Quarantine, Sinks, Row filters & column masks, Liquid clustering, Private datasets, Watermarks, Real-time mode, Rewind & Replay, Pipeline unit testing, and CI/CD with Databricks Asset Bundles.
 
 ## Video Overview
 
